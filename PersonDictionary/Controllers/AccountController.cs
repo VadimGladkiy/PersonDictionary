@@ -40,7 +40,7 @@ namespace PersonDictionary.Controllers
         }
         [HttpPost]
         public ActionResult AddNote(String newNote)
-        {
+        {            
             if (!String.IsNullOrEmpty(newNote))
             {
                 Note noteToWrite = new Note
@@ -53,7 +53,8 @@ namespace PersonDictionary.Controllers
                 {
                     dbContext.Notations.Add(noteToWrite);
                     dbContext.SaveChanges();
-                }                
+                }
+                return View("GetNotesOnPage", noteToWrite);
             }
             return new EmptyResult();
         }
@@ -65,9 +66,8 @@ namespace PersonDictionary.Controllers
                 try
                 {
                     var itemToDel = dbContext.Notations.First(x => x.id == id);
-
-                    TimeSpan delta = new TimeSpan(24,0,0);
-                    if ((DateTime.Now.Second - itemToDel.time.Second) > delta.Seconds)
+                    
+                    if ( itemToDel.time.AddMinutes(1440) < DateTime.Now)
                         throw new Exception();
 
                     dbContext.Notations.Remove(itemToDel);
