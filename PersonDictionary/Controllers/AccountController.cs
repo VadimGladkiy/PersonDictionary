@@ -55,8 +55,7 @@ namespace PersonDictionary.Controllers
                     dbContext.SaveChanges();
                 }                
             }
-            return RedirectToAction("Index",
-                    routeValues: new { id = Session["userId"] });
+            return new EmptyResult();
         }
         [HttpDelete]
         public ActionResult DelNote(int id)

@@ -2,9 +2,12 @@
 <div>
     @foreach (var ptr in Model)
     {
-        <textarea>@ptr.message</textarea> 
-        <span>@ptr.time</span>
-        <br />
+        <div id="@ptr.id">
+            <p>@ptr.message</p> 
+            <span>@ptr.time</span>
+            <br />
+            <a href="" onclick="DeleteNote(event, this)">delete</a>
+        </div>
     }
 </div>
 

@@ -39,8 +39,9 @@
         <div id="notesBunch">
             
            
-                <div id="links"></div>
-            </div>
+                
+        </div>
+        <div id="links"></div>
         <div>
             @using (Html.BeginForm("DownloadFoto", "Account",FormMethod.Post,
                 htmlAttributes:
@@ -86,12 +87,12 @@
 </body>
 </html>
 <script>
+    var itemsOnPage = 5; // хардкод
     $(document).ready(function ()
     {
-        var itemsOnPage = 5; // хардкод
         var notesCount = @Model.Notes.Count();
-        console.log("notesCount: "+notesCount);
         CreateLinks(notesCount,itemsOnPage);
+        GetBunch(1,itemsOnPage);
     });
     function CreateLinks(count, onPage)
     {
@@ -106,6 +107,23 @@
             }
         }
     }
+    function GetBunch(page, itemsOnPage)
+    {
+        $.ajax({
+            method:  "Get",
+            url: "/Account/GetNotesOnPage/"+page+"/5",
+            dataType: "html",
+                
+            success: function(data)
+            {
+                $(data).appendTo("#notesBunch");
+            },
+            error: function()
+            {
+                alert("error to insert a bunch");
+            }
+        });
+    }
     function linksHandlers(link)
     {
         var page = $(link).text();
@@ -114,20 +132,7 @@
         {
             event.preventDefault();
             $("#notesBunch").children().remove(); 
-            $.ajax({
-                method:  "Get",
-                url: "/Account/GetNotesOnPage/"+page+"/5",
-                dataType: "html",
-                
-                success: function(data)
-                {
-                    $(data).appendTo("#notesBunch");
-                },
-                error: function()
-                {
-                    alert("error to insert a bunch");
-                }
-            });
+            GetBunch(page, itemsOnPage);
             return false;
         });
     }
