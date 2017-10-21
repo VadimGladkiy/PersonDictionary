@@ -1,0 +1,42 @@
+﻿@model PersonDictionary.Models.Person
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <title>Initial</title>
+</head>
+<body>
+    <div> 
+        <p> 
+         @Ajax.ActionLink("to sign up", "GetFormRegistration",
+            new AjaxOptions
+            {
+                UpdateTargetId = "logOrRegistPlace",
+                HttpMethod = "Get",
+                InsertionMode = InsertionMode.Replace
+            })
+        </p>
+        <p> 
+            @Ajax.ActionLink("to sign in", "GetFormLogin",
+            new AjaxOptions
+            {
+                UpdateTargetId = "logOrRegistPlace",
+                HttpMethod = "Get",
+                InsertionMode = InsertionMode.Replace
+            })
+        </p>
+    </div>
+    <div id="logOrRegistPlace">
+
+    </div>
+</body>
+</html>

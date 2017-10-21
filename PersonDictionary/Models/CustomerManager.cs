@@ -18,6 +18,5 @@ namespace PersonDictionary.Models
                 = new CustomerManager(new UserStore<Customer>(db));
             return manager;
         }
-
     }
 }

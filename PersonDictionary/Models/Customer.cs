@@ -1,10 +1,16 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonDictionary.Models
 {
-    public class Customer: IdentityUser
+    public class Customer : IdentityUser
     {
-        public int id { get; set; }
+        
+        [Required]
         public string login { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string password { get; set; }
+        
     }
 }

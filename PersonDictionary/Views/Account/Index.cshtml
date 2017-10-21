@@ -1,0 +1,155 @@
+﻿@model PersonDictionary.Models.Person
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+</head>
+<body>
+    <div id="head"> 
+        @Html.ActionLink(linkText: "LogOut",
+         actionName: "LogOut", controllerName: "Home")
+        @Html.ActionLink("Send 5 msgs","SendMsgs")
+    </div>
+    
+    <div id="personInfo">
+        <h4>personal info</h4>
+        <p> Id:
+            @Html.DisplayFor(e => e.Id)
+        </p>
+        <p> login:
+            @Html.DisplayFor(e => e.login)
+        </p>
+        <p> Name:
+            @Html.DisplayFor(e => e.Name)
+        </p>
+        <p> Email:
+            @Html.DisplayFor(e => e.eMail)
+        </p>
+        <p> Foto:
+            @Html.Raw("<img style='width:120px; height:160px;' src=\"data:image/jpeg;base64,"
+                                + Convert.ToBase64String(Model.Foto) + "\" />")
+        </p>
+        Notes:
+        <div id="notesBunch">
+            
+           
+                <div id="links"></div>
+            </div>
+        <div>
+            @using (Html.BeginForm("DownloadFoto", "Account",FormMethod.Post,
+                htmlAttributes:
+                new { enctype = "multipart/form-data" }
+                ))
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+
+                    <legend>Upload a file</legend>
+
+                    <div class="editor-field">
+                        <input type="file" name="uploadFile" />
+                    </div>
+                    <div class="editor-field">
+                        <input type="submit" value="Upload" />
+                    </div>
+                </fieldset>
+                <p>
+                    @ViewData["EntityErrors"]
+                </p>
+                <p>
+                    @ViewData["Error"]
+                </p>
+                <br />
+                @: status: @ViewData["message"]
+            }
+
+            @using (Ajax.BeginForm("AddNote", "Account",
+            ajaxOptions: new AjaxOptions
+            {
+                UpdateTargetId = "notesBunch",
+                HttpMethod = "Post",
+                InsertionMode = InsertionMode.InsertBefore
+
+            }))
+            {
+                <textarea name="newNote"></textarea>
+                <input type="submit" value="Create a new note" />
+            }
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function ()
+    {
+        var itemsOnPage = 5; // хардкод
+        var notesCount = @Model.Notes.Count();
+        console.log("notesCount: "+notesCount);
+        CreateLinks(notesCount,itemsOnPage);
+    });
+    function CreateLinks(count, onPage)
+    {
+        if(count != 0){
+            var numb = Math.round((count/onPage)+0.5);
+            console.log("numb: "+numb);
+            for(var i =0; i< numb; i++)
+            {
+                linksHandlers(
+                $("<a href='' class='linksNotesManage' id='a"+(i+1)+"'>"+(i+1)+"</a>")
+                    .appendTo("#links"));
+            }
+        }
+    }
+    function linksHandlers(link)
+    {
+        var page = $(link).text();
+        console.log("page: "+ page);
+        link.on('click',function()
+        {
+            event.preventDefault();
+            $("#notesBunch").children().remove(); 
+            $.ajax({
+                method:  "Get",
+                url: "/Account/GetNotesOnPage/"+page+"/5",
+                dataType: "html",
+                
+                success: function(data)
+                {
+                    $(data).appendTo("#notesBunch");
+                },
+                error: function()
+                {
+                    alert("error to insert a bunch");
+                }
+            });
+            return false;
+        });
+    }
+    function DeleteNote(event, el)
+    {
+        event = event || window.event // кросс-браузерно
+        event.preventDefault();
+        var id = $(el).parent().attr("id");
+        console.log(typeof $(this).parent());       
+        console.log("id: "+id);
+        $.ajax({
+            method: "Delete",
+            url: "/Account/DelNote/"+id,
+            success: function()
+            {
+                alert("success del in front");
+            },
+            error: function()
+            {
+                alert("error del in front");
+            }
+            
+        });
+    }
+</script>

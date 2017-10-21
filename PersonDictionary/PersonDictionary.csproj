@@ -92,6 +92,7 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Activities" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -146,7 +147,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Dictionary.mdf" />
+    <Content Include="App_Data\Dictionary_log.ldf">
+      <DependentUpon>Dictionary.mdf</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -155,21 +172,44 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ShareController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710180824255_InitialCreate.cs" />
+    <Compile Include="Migrations\201710180824255_InitialCreate.Designer.cs">
+      <DependentUpon>201710180824255_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710190957018_SimpleMigration.cs" />
+    <Compile Include="Migrations\201710190957018_SimpleMigration.Designer.cs">
+      <DependentUpon>201710190957018_SimpleMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710200909091_DelComparePasswordMigration.cs" />
+    <Compile Include="Migrations\201710200909091_DelComparePasswordMigration.Designer.cs">
+      <DependentUpon>201710200909091_DelComparePasswordMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerManager.cs" />
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\MyIdentityContext.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\TelegramMessageSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="Views\Home\Initial.cshtml" />
+    <Content Include="Views\Home\GetFormLogin.cshtml" />
+    <Content Include="Views\Home\GetFormRegistration.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.min.map" />
+    <Content Include="Views\Account\GetNotesOnPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -178,8 +218,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
+    <EmbeddedResource Include="Migrations\201710180824255_InitialCreate.resx">
+      <DependentUpon>201710180824255_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710190957018_SimpleMigration.resx">
+      <DependentUpon>201710190957018_SimpleMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710200909091_DelComparePasswordMigration.resx">
+      <DependentUpon>201710200909091_DelComparePasswordMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

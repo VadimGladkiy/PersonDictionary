@@ -6,8 +6,11 @@ namespace PersonDictionary.Models
 {
     public class Note
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
+
         [Required,StringLength(500),UIHint("MultilineText")]
-        string message { get; set; }
+        public string message { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime time { get; set; }

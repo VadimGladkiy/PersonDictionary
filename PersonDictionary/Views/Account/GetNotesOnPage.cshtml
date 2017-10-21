@@ -1,0 +1,10 @@
+﻿@model IEnumerable<PersonDictionary.Models.Note>
+<div>
+    @foreach (var ptr in Model)
+    {
+        <textarea>@ptr.message</textarea> 
+        <span>@ptr.time</span>
+        <br />
+    }
+</div>
+
