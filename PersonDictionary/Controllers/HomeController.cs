@@ -34,6 +34,7 @@ namespace PersonDictionary.Controllers
         {
             return View();
         }
+
         // authorize
         public ActionResult GetFormLogin()
         {

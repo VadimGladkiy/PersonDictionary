@@ -194,10 +194,13 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerManager.cs" />
     <Compile Include="Models\DataContext.cs" />
+    <Compile Include="Models\IRepository.cs" />
     <Compile Include="Models\MyIdentityContext.cs" />
     <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\NoteRepository.cs" />
     <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\TelegramMessageSender.cs" />
+    <Compile Include="Models\PersonRepository.cs" />
+    <Compile Include="Models\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

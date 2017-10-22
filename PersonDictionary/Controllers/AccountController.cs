@@ -14,6 +14,7 @@ namespace PersonDictionary.Controllers
     public class AccountController : Controller
     {
         // GET: Account
+        private UnitOfWork unitOfWork;
         // [Authorize]
         public ActionResult Index(int id)
         {
@@ -36,7 +37,7 @@ namespace PersonDictionary.Controllers
         // methods notes manage
         public AccountController()
         {
-           
+            unitOfWork = new UnitOfWork();
         }
         [HttpPost]
         public ActionResult AddNote(String newNote)
@@ -49,11 +50,8 @@ namespace PersonDictionary.Controllers
                     PersonId = (int)Session["userId"],
                     time = DateTime.Now,
                 };
-                using (DataContext dbContext = new DataContext())
-                {
-                    dbContext.Notations.Add(noteToWrite);
-                    dbContext.SaveChanges();
-                }
+                unitOfWork.Notations.Create(noteToWrite);
+                unitOfWork.Save();
                 return View("GetNotesOnPage", noteToWrite);
             }
             return new EmptyResult();
@@ -61,36 +59,19 @@ namespace PersonDictionary.Controllers
         [HttpDelete]
         public ActionResult DelNote(int id)
         {
-            using (DataContext dbContext = new DataContext())
-            {
-                try
-                {
-                    var itemToDel = dbContext.Notations.First(x => x.id == id);
-                    
-                    if ( itemToDel.time.AddMinutes(1440) < DateTime.Now)
-                        throw new Exception();
-
-                    dbContext.Notations.Remove(itemToDel);
-                    dbContext.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    // some handler 
-                }
-            }
+            unitOfWork.Notations.Delete(id);
+            unitOfWork.Save();
             return RedirectToAction("Index", new { id = Session["userId"]});
         }
         [HttpGet]
         public ActionResult GetNotesOnPage(int page, int quantityOnPage = 5)
         {
             IEnumerable<Note> items;
-            using (DataContext dbContext = new DataContext())
-            {
-                items = dbContext.Notations.ToList()
+            items = unitOfWork.Notations.GetAll((int)Session["userId"])
                     .OrderBy(x => x.time.Second)
                     .Skip(quantityOnPage * (page-1))
                     .Take(quantityOnPage);
-            }
+            
             return PartialView(items);
         }
         // methods person info manage
@@ -101,17 +82,13 @@ namespace PersonDictionary.Controllers
             try
             {
                 if (ModelState.IsValid && uploadFile.ContentLength > 0)
-                {                    
-                    using (DataContext dbContext = new DataContext())
-                    {
-                        var alterPerson = dbContext.Persons
-                            .FirstOrDefault(x => x.Id == id);
-                        MemoryStream target = new MemoryStream();
-                        uploadFile.InputStream.CopyTo(target);
-                        alterPerson.PasswordConfirm = alterPerson.password;
-                        alterPerson.Foto = target.ToArray();
-                        dbContext.SaveChanges();
-                    }
+                {                     
+                    var alterPerson = unitOfWork.Persons.Get(id); 
+                    MemoryStream target = new MemoryStream();
+                    uploadFile.InputStream.CopyTo(target);
+                    alterPerson.PasswordConfirm = alterPerson.password;
+                    alterPerson.Foto = target.ToArray();
+                    unitOfWork.Persons.Update(alterPerson);
                 }
                 ViewData["message"] = "Upload successful";
             }
@@ -133,23 +110,5 @@ namespace PersonDictionary.Controllers
             }
             return RedirectToAction("Index", routeValues: new { id = id });
         }
-        public ActionResult SendMsgs()
-        {
-            IEnumerable<Note> items;
-            using (DataContext dbContext = new DataContext())
-            {
-                items = dbContext.Notations.ToList()
-                    .OrderBy(x => x.time.Second)                    
-                    .Take(5);
-            }
-            TelegramMessageSender sender = new TelegramMessageSender();
-            foreach (var ptr in items)
-            {
-                sender.sendMessage("+380*********", ptr.message);
-            } 
-
-            return RedirectToAction("Index", new { id = Session["userId"] });
-        }
-    
     }
 }
