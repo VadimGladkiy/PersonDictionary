@@ -30,11 +30,18 @@ namespace PersonDictionary.Models
         {
             db.Entry(pers).State = EntityState.Modified;
         }
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             Person pers = db.Persons.Find(id);
             if (pers != null)
+            {
                 db.Persons.Remove(pers);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Person> GetAll(int allById)

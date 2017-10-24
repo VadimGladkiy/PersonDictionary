@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PersonDictionary.Models;
+using PersonDictionary.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 
@@ -64,14 +65,28 @@ namespace PersonDictionary.Controllers
             return RedirectToAction("Index", new { id = Session["userId"]});
         }
         [HttpGet]
-        public ActionResult GetNotesOnPage(int page, int quantityOnPage = 5)
+        public ActionResult GetNotesOnPage(int pageNumber, int pageSize = 5)
+        {
+            var model = new NotesViewModel();
+            
+            model.Notes = unitOfWork.Notations.GetAll((int)Session["userId"])
+                    .OrderBy(x => x.time)
+                    .Skip(pageSize * (pageNumber-1))
+                    .Take(pageSize);
+            model.PageInfo = new PageInfo
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalItems = model.Notes.Count()
+            };
+
+            return PartialView(model);
+        }
+        public ActionResult GetAllNotes()
         {
             IEnumerable<Note> items;
             items = unitOfWork.Notations.GetAll((int)Session["userId"])
-                    .OrderBy(x => x.time.Second)
-                    .Skip(quantityOnPage * (page-1))
-                    .Take(quantityOnPage);
-            
+                    .OrderBy(x => x.time);
             return PartialView(items);
         }
         // methods person info manage

@@ -94,6 +94,7 @@
     </Reference>
     <Reference Include="System.Activities" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -164,6 +165,13 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Styles\bootstrap-grid.css" />
+    <Content Include="Styles\bootstrap-grid.min.css" />
+    <Content Include="Styles\bootstrap-reboot.css" />
+    <Content Include="Styles\bootstrap-reboot.min.css" />
+    <Content Include="Styles\bootstrap.css" />
+    <Content Include="Styles\bootstrap.min.css" />
+    <Content Include="Styles\Pagination.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -178,6 +186,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\NotesViewModel.cs" />
+    <Compile Include="Infrastructure\PageInfo.cs" />
+    <Compile Include="Infrastructure\PagingHelpers.cs" />
     <Compile Include="Migrations\201710180824255_InitialCreate.cs" />
     <Compile Include="Migrations\201710180824255_InitialCreate.Designer.cs">
       <DependentUpon>201710180824255_InitialCreate.cs</DependentUpon>
@@ -189,6 +200,10 @@
     <Compile Include="Migrations\201710200909091_DelComparePasswordMigration.cs" />
     <Compile Include="Migrations\201710200909091_DelComparePasswordMigration.Designer.cs">
       <DependentUpon>201710200909091_DelComparePasswordMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710241145561_NoteAuthorScriptIgnoreMigration.cs" />
+    <Compile Include="Migrations\201710241145561_NoteAuthorScriptIgnoreMigration.Designer.cs">
+      <DependentUpon>201710241145561_NoteAuthorScriptIgnoreMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -213,6 +228,14 @@
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\Account\GetNotesOnPage.cshtml" />
+    <Content Include="Scripts\jquery.Extension.Pagination.min.js" />
+    <Content Include="Styles\bootstrap-grid.css.map" />
+    <Content Include="Styles\bootstrap-grid.min.css.map" />
+    <Content Include="Styles\bootstrap-reboot.css.map" />
+    <Content Include="Styles\bootstrap-reboot.min.css.map" />
+    <Content Include="Styles\bootstrap.css.map" />
+    <Content Include="Styles\bootstrap.min.css.map" />
+    <Content Include="Views\Account\GetAllNotes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -230,7 +253,11 @@
     <EmbeddedResource Include="Migrations\201710200909091_DelComparePasswordMigration.resx">
       <DependentUpon>201710200909091_DelComparePasswordMigration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710241145561_NoteAuthorScriptIgnoreMigration.resx">
+      <DependentUpon>201710241145561_NoteAuthorScriptIgnoreMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

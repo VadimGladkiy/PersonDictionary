@@ -9,6 +9,9 @@
     <title>Index</title>
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.Extension.Pagination.min.js"></script>
+    <link href="~/Styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Styles/Pagination.css" rel="stylesheet" />
 </head>
 <body>
     <div id="head"> 
@@ -35,10 +38,14 @@
                                 + Convert.ToBase64String(Model.Foto) + "\" />")
         </p>
         Notes:
-        <div id="notesBunch">
-          
+        @Html.Action("GetNotesOnPage", new { pageNumber = 1 })
+        <div id="demo">
+            <div id="notesBunch" class="container">
+            </div>
+            <div id="links" class="paginationjs-theme-green">
+
+            </div>
         </div>
-        <div id="links"></div>
         <div>
             @using (Html.BeginForm("DownloadFoto", "Account",FormMethod.Post,
                 htmlAttributes:
@@ -85,12 +92,28 @@
 </html>
 <script>
     var itemsOnPage = 5; // хардкод
+    var dataContainer = $('#notesBunch');
     $(document).ready(function ()
     {
-        var notesCount = @ViewData["notesCount"];
-        CreateLinks(notesCount,itemsOnPage);
-        GetBunch(1,itemsOnPage);
+        var notesCount = @ViewData["notesCount"];    
+        
     });
+    function GetAllNotes()
+    {
+        $.ajax({
+            method:  "Get",
+            url: "/Account/GetAllNotes",
+            dataType: "html",
+            success: function(data)
+            {
+                $(data).appendTo("#notesBunch");
+            },
+            error: function()
+            {
+                alert("error to insert a bunch");
+            }
+        });
+    }
     function CreateLinks(count, onPage)
     {
         if(count != 0){
@@ -103,6 +126,7 @@
                     .appendTo("#links"));
             }
         }
+        return numb;
     }
     function GetBunch(page, itemsOnPage)
     {

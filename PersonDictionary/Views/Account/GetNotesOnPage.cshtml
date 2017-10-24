@@ -1,6 +1,7 @@
-﻿@model IEnumerable<PersonDictionary.Models.Note>
+﻿@model PersonDictionary.Infrastructure.NotesViewModel
+@using PersonDictionary.Infrastructure
 <div>
-    @foreach (var ptr in Model)
+    @foreach (var ptr in @Model.Notes)
     {
         <div id="@ptr.id">
             <p>@ptr.message</p> 
@@ -9,5 +10,9 @@
             <a href="" onclick="DeleteNote(event, this)">delete</a>
         </div>
     }
+    <br />
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("GetNotesOnPage", new { pageNumber = x }))
+    </div>
 </div>
 
