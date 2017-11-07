@@ -14,6 +14,19 @@ namespace PersonDictionary
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "",
+                url: "Account/Index/{id}/{pageNumber}/{pageSize}",
+                defaults: new
+                {
+                    controller = "Account",
+                    action = "Index",
+                    id = UrlParameter.Optional,
+                    pageNumber = UrlParameter.Optional,
+                    pageSize = UrlParameter.Optional
+                }
+            );
+
+            routes.MapRoute(
                name: "",
                url: "Account/GetNotesOnPage/{page}/{quantityOnPage}",
                defaults: new {
@@ -32,6 +45,16 @@ namespace PersonDictionary
                   controller = "Account",
                   action = "DownloadFoto",
                   uploadFile = UrlParameter.Optional
+              }
+          );
+            routes.MapRoute(
+              name: "",
+              url: "Account/DelNote/{id}",
+              defaults: new
+              {
+                  controller = "Account",
+                  action = "DelNote",
+                  id = UrlParameter.Optional
               }
           );
 

@@ -1,18 +1,34 @@
-﻿@model PersonDictionary.Infrastructure.NotesViewModel
+﻿@model IEnumerable<PersonDictionary.Models.Note>
 @using PersonDictionary.Infrastructure
 <div>
-    @foreach (var ptr in @Model.Notes)
-    {
-        <div id="@ptr.id">
-            <p>@ptr.message</p> 
-            <span>@ptr.time</span>
-            <br />
-            <a href="" onclick="DeleteNote(event, this)">delete</a>
-        </div>
-    }
-    <br />
-    <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action("GetNotesOnPage", new { pageNumber = x }))
-    </div>
+    <table class="container table">
+        <thead>
+            <tr class="row">
+                <td class="col-md-5">message</td>
+                <td class="col-md-2">time</td>
+                <td class="col-md-2">delete it</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ptr in Model)
+            {
+                <tr class="row">
+                    <td class="col-md-5">
+                        @ptr.message
+                    </td>
+
+                    <td class="col-md-2">
+                        @ptr.time
+                    </td>
+
+                    <td class="col-md-2">
+                        @Html.ActionLink("delete", "DelNote",
+                    routeValues: new { id = ptr.id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        
 </div>
 

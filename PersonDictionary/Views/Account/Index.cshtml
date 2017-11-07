@@ -1,4 +1,5 @@
-﻿@model PersonDictionary.Models.Person
+﻿@model PersonDictionary.Infrastructure.NotesViewModel
+@using PersonDictionary.Infrastructure
 @{
     Layout = null;
 }
@@ -9,53 +10,62 @@
     <title>Index</title>
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/Scripts/jquery.Extension.Pagination.min.js"></script>
     <link href="~/Styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Styles/Pagination.css" rel="stylesheet" />
+    <link href="~/StylesDemo/Index_styles.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="head"> 
-        @Html.ActionLink(linkText: "LogOut",
+    <header>
+        <div id="header_info">
+        <i>
+            This is a personal page - a collection of web pages, 
+            with content that describes the sphere of interest of a person.
+        </i>
+        <i>
+            The user has the rights to log out, to view,            
+            to change any personal information.
+        </i>
+        </div>
+        <div id="log_out_block">
+            @Html.ActionLink(linkText: "LogOut",
          actionName: "LogOut", controllerName: "Home")
-    </div>
-    
-    <div id="personInfo">
-        <h4>personal info</h4>
+            <img src="~/StylesDemoContent/exit_log.png" width="60" alt="Exit.png" />
+        </div>
+    </header>
+    <div id="person_info">
+        <br />
+        <h3>person info</h3>
         <p> Id:
-            @Html.DisplayFor(e => e.Id)
+            @Html.DisplayFor(e => e.Person.Id)
         </p>
         <p> login:
-            @Html.DisplayFor(e => e.login)
+            @Html.DisplayFor(e => e.Person.login)
         </p>
         <p> Name:
-            @Html.DisplayFor(e => e.Name)
+            @Html.DisplayFor(e => e.Person.Name)
         </p>
         <p> Email:
-            @Html.DisplayFor(e => e.eMail)
+            @Html.DisplayFor(e => e.Person.eMail)
         </p>
         <p> Foto:
+        @if (Model.Person.Foto != null)
+        {
             @Html.Raw("<img style='width:120px; height:160px;' src=\"data:image/jpeg;base64,"
-                                + Convert.ToBase64String(Model.Foto) + "\" />")
+                                          + Convert.ToBase64String(Model.Person.Foto) + "\" />")
+        }
+        else
+        {
+            <img alt="Place for a photo" />
+        }
         </p>
-        Notes:
-        @Html.Action("GetNotesOnPage", new { pageNumber = 1 })
-        <div id="demo">
-            <div id="notesBunch" class="container">
-            </div>
-            <div id="links" class="paginationjs-theme-green">
-
-            </div>
-        </div>
         <div>
-            @using (Html.BeginForm("DownloadFoto", "Account",FormMethod.Post,
+            @using (Html.BeginForm("DownloadFoto", "Account", FormMethod.Post,
                 htmlAttributes:
                 new { enctype = "multipart/form-data" }
                 ))
-                {
-                    @Html.AntiForgeryToken()
-                    <fieldset>
-
-                    <legend>Upload a file</legend>
+            {
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <legend>Upload a new photo</legend>
 
                     <div class="editor-field">
                         <input type="file" name="uploadFile" />
@@ -64,29 +74,31 @@
                         <input type="submit" value="Upload" />
                     </div>
                 </fieldset>
-                <p>
-                    @ViewData["EntityErrors"]
-                </p>
-                <p>
-                    @ViewData["Error"]
-                </p>
                 <br />
-                @: status: @ViewData["message"]
-            }
-
-            @using (Ajax.BeginForm("AddNote", "Account",
-            ajaxOptions: new AjaxOptions
-            {
-                UpdateTargetId = "notesBunch",
-                HttpMethod = "Post",
-                InsertionMode = InsertionMode.InsertBefore
-
-            }))
-            {
-                <textarea name="newNote"></textarea>
-                <input type="submit" value="Create a new note" />
             }
         </div>
+    </div>
+    <div id="Notes">
+        <br />
+        <h4>Notes:</h4>
+        @{Html.RenderPartial("GetNotesOnPage",Model.Person.Notes);}
+        
+        <div class="btn-group">
+            @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { pageNumber = x }))
+        </div>
+    </div>
+    <div>
+        <br />
+        @using (Html.BeginForm("AddNote", "Account", FormMethod.Post))
+        {
+            
+            <textarea name="newNote" rows="8" cols="70"
+                maxlength="500" required>
+            </textarea>
+            <br />
+            <input type="submit" value="Create a new note" />
+        }
+        
     </div>
 </body>
 </html>
@@ -94,9 +106,20 @@
     var itemsOnPage = 5; // хардкод
     var dataContainer = $('#notesBunch');
     $(document).ready(function ()
-    {
+    {        
         var notesCount = @ViewData["notesCount"];    
-        
+        /*$.ajax({
+            method: "Get",
+            contentType: "application/json; charset=utf-8",
+            url: "/Account/GetNotesOnPage/{pageNumber}/{pageSize}",
+            dataType: "json",
+            data: { pageNumber: "1" },
+            success: function()
+            {
+                console.log("success");
+            }            
+        });
+        */
     });
     function GetAllNotes()
     {
@@ -174,8 +197,7 @@
             error: function()
             {
                 alert("error del in front");
-            }
-            
+            }            
         });
     }
 </script>

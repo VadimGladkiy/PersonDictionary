@@ -165,6 +165,13 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="StylesDemoContent\dict_az.png" />
+    <Content Include="StylesDemoContent\dict_links.jpg" />
+    <Content Include="StylesDemoContent\elect_links.jpg" />
+    <Content Include="StylesDemoContent\exit_log.png" />
+    <Content Include="StylesDemoContent\office_book_user.jpg" />
+    <Content Include="StylesDemo\Index_styles.css" />
+    <Content Include="StylesDemo\Initial_styles.css" />
     <Content Include="Styles\bootstrap-grid.css" />
     <Content Include="Styles\bootstrap-grid.min.css" />
     <Content Include="Styles\bootstrap-reboot.css" />
@@ -235,7 +242,6 @@
     <Content Include="Styles\bootstrap-reboot.min.css.map" />
     <Content Include="Styles\bootstrap.css.map" />
     <Content Include="Styles\bootstrap.min.css.map" />
-    <Content Include="Views\Account\GetAllNotes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

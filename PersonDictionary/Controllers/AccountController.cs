@@ -8,6 +8,9 @@ using PersonDictionary.Models;
 using PersonDictionary.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
 
 namespace PersonDictionary.Controllers
 {
@@ -17,23 +20,30 @@ namespace PersonDictionary.Controllers
         // GET: Account
         private UnitOfWork unitOfWork;
         // [Authorize]
-        public ActionResult Index(int id)
+        public ActionResult Index(int id, int pageNumber =1 , int pageSize = 5)
         {
             Session["userId"] = id;
-            using (var dbContext = new DataContext())
+            var model = new NotesViewModel();
+            
+            var person = unitOfWork.Persons.Get(id);
+            if (person != null)
             {
-                var person = dbContext.Persons.FirstOrDefault(x => x.Id == id);
-                if (person != null)
-                    person.Notes = dbContext.Notations
-                        .Where(x => x.PersonId == id).ToList();
-                ViewData["notesCount"] = dbContext.Notations
-                    .Where(x => x.PersonId == id).Count();
-                return View(person);
-            } 
+                person.Notes = unitOfWork.Notations.GetAll(id).ToList();
+                model.Person = person; 
+                model.PageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = person.Notes.Count()
+                };
+                return View(model);
+            }
+            else 
+            return  new HttpStatusCodeResult(500);               
         }
         public ActionResult LogOut()
         {
-            return RedirectToAction(actionName:"LogOut", controllerName:"Home");
+            return RedirectToAction(actionName:"Initial", controllerName:"Home");
         }
         // methods notes manage
         public AccountController()
@@ -45,50 +55,27 @@ namespace PersonDictionary.Controllers
         {            
             if (!String.IsNullOrEmpty(newNote))
             {
+                int id = (int)Session["userId"];
                 Note noteToWrite = new Note
                 {
                     message = newNote,
-                    PersonId = (int)Session["userId"],
+                    PersonId = id,
                     time = DateTime.Now,
                 };
                 unitOfWork.Notations.Create(noteToWrite);
                 unitOfWork.Save();
-                return View("GetNotesOnPage", noteToWrite);
+                return Redirect("/Account/Index/"+ id);
             }
             return new EmptyResult();
         }
-        [HttpDelete]
+        
         public ActionResult DelNote(int id)
         {
             unitOfWork.Notations.Delete(id);
             unitOfWork.Save();
-            return RedirectToAction("Index", new { id = Session["userId"]});
+            return Redirect("/Account/Index/"+(int)Session["userId"]);
         }
-        [HttpGet]
-        public ActionResult GetNotesOnPage(int pageNumber, int pageSize = 5)
-        {
-            var model = new NotesViewModel();
-            
-            model.Notes = unitOfWork.Notations.GetAll((int)Session["userId"])
-                    .OrderBy(x => x.time)
-                    .Skip(pageSize * (pageNumber-1))
-                    .Take(pageSize);
-            model.PageInfo = new PageInfo
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalItems = model.Notes.Count()
-            };
-
-            return PartialView(model);
-        }
-        public ActionResult GetAllNotes()
-        {
-            IEnumerable<Note> items;
-            items = unitOfWork.Notations.GetAll((int)Session["userId"])
-                    .OrderBy(x => x.time);
-            return PartialView(items);
-        }
+        
         // methods person info manage
         [HttpPost]
         public ActionResult DownloadFoto(HttpPostedFileBase uploadFile)
@@ -104,6 +91,7 @@ namespace PersonDictionary.Controllers
                     alterPerson.PasswordConfirm = alterPerson.password;
                     alterPerson.Foto = target.ToArray();
                     unitOfWork.Persons.Update(alterPerson);
+                    unitOfWork.Save();
                 }
                 ViewData["message"] = "Upload successful";
             }
@@ -123,7 +111,7 @@ namespace PersonDictionary.Controllers
             {
                 ViewData["message"] = "Upload failed";
             }
-            return RedirectToAction("Index", routeValues: new { id = id });
+            return Redirect("/Account/Index/"+ id );
         }
     }
 }

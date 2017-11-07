@@ -7,6 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using Newtonsoft.Json;
 
 namespace PersonDictionary
 {
@@ -18,7 +19,11 @@ namespace PersonDictionary
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-           
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {                               
+                Formatting = Formatting.None,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
 
         }
     }

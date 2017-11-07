@@ -17,7 +17,8 @@ namespace PersonDictionary.Models
 
         public IEnumerable<Note> GetAll(int allById)
         {
-            return db.Notations.Where(e => e.PersonId == allById).ToList();
+            return db.Notations.Where(e => e.PersonId == allById)
+                .OrderByDescending(e => e.time).ToList();
         }
         public Note Get(int id)
         {

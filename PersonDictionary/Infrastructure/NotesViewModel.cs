@@ -8,7 +8,7 @@ namespace PersonDictionary.Infrastructure
 {
     public class NotesViewModel
     {
-        public IEnumerable<Note> Notes { get; set; }
+        public Person Person { get; set; }
         public PageInfo PageInfo { get; set; }
     }
 }

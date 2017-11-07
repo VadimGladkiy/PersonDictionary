@@ -108,7 +108,7 @@ namespace PersonDictionary.Controllers
 
                 IdentityResult result = await UserManager
                     .CreateAsync(new Customer {
-                        
+                        Email = model.eMail,
                         UserName = model.Name,
                         login = model.login,
                         password = model.password
@@ -116,7 +116,11 @@ namespace PersonDictionary.Controllers
                     model.password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("GetFormLogin", "Home");
+                    if (dbPersons == null) dbPersons = new DataContext();
+                    dbPersons.Persons.Add(model);
+                    dbPersons.SaveChanges();
+                    dbPersons.Dispose();
+                    return Redirect("/Home/Initial");
                 }
                 else
                 {
@@ -126,7 +130,7 @@ namespace PersonDictionary.Controllers
                     }
                 }
             }
-            return RedirectToAction("GetFormRegistration");
+            return RedirectToAction("/Home/Initial");
         }
     }
 }
