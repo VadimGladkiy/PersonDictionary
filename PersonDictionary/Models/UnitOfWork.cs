@@ -10,7 +10,7 @@ namespace PersonDictionary.Models
         private DataContext db = new DataContext();
         private PersonRepository personRepo;
         private NoteRepository noteRepo;
-        public int currUserId { set; get; }
+        public String currUserId { set; get; }
         public PersonRepository Persons
         {
             get

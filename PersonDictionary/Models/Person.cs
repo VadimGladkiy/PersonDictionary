@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,9 +9,9 @@ namespace PersonDictionary.Models
 {
     public class Person
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         [HiddenInput (DisplayValue = false)]
-        public int Id { get; set; }
+        public String Id { get; set; }
 
         [Required,Display(Name="Имя"), MaxLength(50)]
         public string Name { get; set; }
@@ -37,6 +38,9 @@ namespace PersonDictionary.Models
         public Person()
         {
             Notes = new List<Note>();
-        }    
+        }
+        
+        // the navigation prop
+        //public Customer Customer { set; get; }    
     }
 }

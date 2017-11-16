@@ -1,40 +1,43 @@
-﻿using Microsoft.Owin.Security;
-using PersonDictionary.Models;
+﻿using PersonDictionary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Http;
-using System.Diagnostics;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using PersonDictionary.Filters;
+using PersonDictionary.ApiService;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Net;
 
 namespace PersonDictionary.Controllers
 {
-    [Authorize]
+    
     public class ShareController : ApiController
     {
-        UnitOfWork unitOfWork;
+        private UnitOfWork unitOfWork;
         public ShareController()
         {
             unitOfWork = new UnitOfWork();
+
             var user_id = RequestContext.Principal.Identity.GetUserId();
-            int number;
-            bool result = Int32.TryParse(user_id, out number);
-            if (result == true)
+
+            if (user_id == null)
             {
-                unitOfWork.currUserId = number;
-            }else
-            {
-                throw new NotImplementedException();
-            }        
+                // some handler
+            }
+            else
+            unitOfWork.currUserId = user_id;
         }
-        [HttpGet]
+        [LogActionFilter]
+        [ApiAuthentAttr]
         public IHttpActionResult GetNotes()
         {
             IEnumerable<Note> items;
-            items = unitOfWork.Notations.GetAll(unitOfWork.currUserId)
+            String userName1 =  Thread.CurrentPrincipal.Identity.Name;
+            String userId1  = Request.Properties["UserId"].ToString();
+            items = unitOfWork.Notations.GetAll(userId1)
             .ToList().OrderBy(x => x.time);
             return Ok(items);            
         }

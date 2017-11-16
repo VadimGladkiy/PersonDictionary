@@ -152,7 +152,16 @@
     <Content Include="App_Data\Dictionary_log.ldf">
       <DependentUpon>Dictionary.mdf</DependentUpon>
     </Content>
+    <Content Include="Fonts\UFL.txt" />
     <Content Include="Global.asax" />
+    <Content Include="Fonts\Ubuntu-Bold.ttf" />
+    <Content Include="Fonts\Ubuntu-BoldItalic.ttf" />
+    <Content Include="Fonts\Ubuntu-Italic.ttf" />
+    <Content Include="Fonts\Ubuntu-Light.ttf" />
+    <Content Include="Fonts\Ubuntu-LightItalic.ttf" />
+    <Content Include="Fonts\Ubuntu-Medium.ttf" />
+    <Content Include="Fonts\Ubuntu-MediumItalic.ttf" />
+    <Content Include="Fonts\Ubuntu-Regular.ttf" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
@@ -184,12 +193,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiService\ApiAuthentAttr.cs" />
+    <Compile Include="ApiService\ApiLogin.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ShareController.cs" />
+    <Compile Include="Filters\LogActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,6 +224,10 @@
     <Compile Include="Migrations\201710241145561_NoteAuthorScriptIgnoreMigration.Designer.cs">
       <DependentUpon>201710241145561_NoteAuthorScriptIgnoreMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711091825435_PrimaryKeyToStringMigration.cs" />
+    <Compile Include="Migrations\201711091825435_PrimaryKeyToStringMigration.Designer.cs">
+      <DependentUpon>201711091825435_PrimaryKeyToStringMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerManager.cs" />
@@ -224,6 +240,7 @@
     <Compile Include="Models\PersonRepository.cs" />
     <Compile Include="Models\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SendingToEmail\SendPasswordToEmail.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -242,6 +259,7 @@
     <Content Include="Styles\bootstrap-reboot.min.css.map" />
     <Content Include="Styles\bootstrap.css.map" />
     <Content Include="Styles\bootstrap.min.css.map" />
+    <Content Include="Views\Home\RememberPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -261,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710241145561_NoteAuthorScriptIgnoreMigration.resx">
       <DependentUpon>201710241145561_NoteAuthorScriptIgnoreMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711091825435_PrimaryKeyToStringMigration.resx">
+      <DependentUpon>201711091825435_PrimaryKeyToStringMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

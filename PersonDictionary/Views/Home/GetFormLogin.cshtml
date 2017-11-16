@@ -33,6 +33,14 @@
     </div>
 }
 <p>
-@ViewBag.Error
+@Ajax.ActionLink("remember password", "RememberPassword",
+            new AjaxOptions {
+                UpdateTargetId = "RememberPasswordTags",
+                InsertionMode = InsertionMode.Replace,
+            })
 </p>
+<div id="RememberPasswordTags">
+</div>
+<div id="SendingResult">
+</div>
 

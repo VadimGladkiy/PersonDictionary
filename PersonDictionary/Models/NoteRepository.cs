@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PersonDictionary.Models
 {
-    public class NoteRepository : IRepository<Note>
+    public class NoteRepository : IRepository<Note, Int32>
     {
         private DataContext db;
 
@@ -15,12 +15,12 @@ namespace PersonDictionary.Models
             this.db = context;
         }
 
-        public IEnumerable<Note> GetAll(int allById)
+        public IEnumerable<Note> GetAll(String allByParameter)
         {
-            return db.Notations.Where(e => e.PersonId == allById)
+            return db.Notations.Where(e => e.PersonId == allByParameter)
                 .OrderByDescending(e => e.time).ToList();
         }
-        public Note Get(int id)
+        public Note Get(Int32 id)
         {
             return db.Notations.Find(id);
         }
@@ -35,7 +35,7 @@ namespace PersonDictionary.Models
             db.Entry(note).State = EntityState.Modified;
         }
 
-        public bool Delete(int id)
+        public bool Delete(Int32 id)
         { 
             Note itemToDel = db.Notations.First(x => x.id == id);
             if (itemToDel.time.AddMinutes(1440) < DateTime.Now)
@@ -48,7 +48,6 @@ namespace PersonDictionary.Models
                 return true;
             }
         }
-  
         public IEnumerable<Note> GetAll()
         {
             throw new NotImplementedException();

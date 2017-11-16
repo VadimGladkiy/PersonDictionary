@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace PersonDictionary.Models
 {
-    interface IRepository<T> where T: class
+    interface IRepository<T,V> where T: class  
     {
         IEnumerable<T> GetAll();
-        IEnumerable<T> GetAll(int allById);
-        T Get(int id);
+        IEnumerable<T> GetAll(String allByParameter);
+        T Get(V id);
         void Create(T item);
         void Update(T item);
-        bool Delete(int id);
+        bool Delete(V id);
     }
 }

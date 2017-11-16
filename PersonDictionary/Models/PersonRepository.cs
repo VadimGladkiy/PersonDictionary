@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PersonDictionary.Models
 {
-    public class PersonRepository : IRepository<Person>
+    public class PersonRepository : IRepository<Person, String>
     {
         private DataContext db;
 
@@ -18,7 +18,7 @@ namespace PersonDictionary.Models
         {
             return db.Persons;
         }
-        public Person Get(int id)
+        public Person Get(String id)
         {
             return db.Persons.Find(id);
         }
@@ -30,7 +30,7 @@ namespace PersonDictionary.Models
         {
             db.Entry(pers).State = EntityState.Modified;
         }
-        public bool Delete(int id)
+        public bool Delete(String id)
         {
             Person pers = db.Persons.Find(id);
             if (pers != null)
@@ -43,8 +43,7 @@ namespace PersonDictionary.Models
                 return false;
             }
         }
-
-        public IEnumerable<Person> GetAll(int allById)
+        public IEnumerable<Person> GetAll(String allByParameter)
         {
             throw new NotImplementedException();
         }

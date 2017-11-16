@@ -20,7 +20,7 @@ namespace PersonDictionary.Models
         public DateTime time { get; set; }
         [DataMember]
         [ForeignKey("NoteAuthor")]
-        public int PersonId { get; set; }
+        public String PersonId { get; set; }
         [ScriptIgnore]
         public virtual Person NoteAuthor { get; set; }
     }

@@ -1,7 +1,29 @@
-﻿body {
+﻿@font-face {
+    font-family: Ubuntu; /* Имя шрифта */
+    src: url(../Fonts/Ubuntu-Bold.ttf); /* Путь к файлу со шрифтом */
+    
+    /*
+    src : url(../Fonts/Ubuntu-Bold.ttf);
+    src : url(../Fonts/Ubuntu-Italic.ttf);
+    src : url(../Fonts/Ubuntu-Light.ttf);
+    src : url(../Fonts/Ubuntu-Regular.ttf);
+    src : url(../Fonts/Ubuntu-BoldItalic.ttf);
+    */
+}
+/*@import url('https://fonts.googleapis.com/css?family=Ubuntu');*/
+body {
     margin-left:10%;
     margin-right:10%;  
+    background-color: #f2f2f2;
+    font-family:Ubuntu;
+    
+
 }
+h1, h2, h3, h4, h5, h6 {
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:300;
+    
+}    
 header {
     display:block;
     padding-left: 5%;

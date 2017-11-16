@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 using PersonDictionary.Models;
 using PersonDictionary.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Web.Script.Serialization;
+using Microsoft.AspNet.Identity;
 
 namespace PersonDictionary.Controllers
 {
@@ -19,16 +18,20 @@ namespace PersonDictionary.Controllers
     {
         // GET: Account
         private UnitOfWork unitOfWork;
-        // [Authorize]
-        public ActionResult Index(int id, int pageNumber =1 , int pageSize = 5)
+    
+        public ActionResult Index(int pageNumber =1 , int pageSize = 5)
         {
+            if (!User.Identity.IsAuthenticated) throw new Exception(); 
+            string id = User.Identity.GetUserId();
+           
             Session["userId"] = id;
+
             var model = new NotesViewModel();
             
-            var person = unitOfWork.Persons.Get(id);
+            var person = unitOfWork.Persons.Get(Session["userId"].ToString());
             if (person != null)
             {
-                person.Notes = unitOfWork.Notations.GetAll(id).ToList();
+                person.Notes = unitOfWork.Notations.GetAll(Session["userId"].ToString()).ToList();
                 model.Person = person; 
                 model.PageInfo = new PageInfo
                 {
@@ -52,40 +55,46 @@ namespace PersonDictionary.Controllers
         }
         [HttpPost]
         public ActionResult AddNote(String newNote)
-        {            
+        {
             if (!String.IsNullOrEmpty(newNote))
             {
-                int id = (int)Session["userId"];
                 Note noteToWrite = new Note
                 {
                     message = newNote,
-                    PersonId = id,
+                    PersonId = Session["userId"].ToString(),
                     time = DateTime.Now,
                 };
                 unitOfWork.Notations.Create(noteToWrite);
                 unitOfWork.Save();
-                return Redirect("/Account/Index/"+ id);
+                return Redirect("/Account/Index");
             }
-            return new EmptyResult();
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.NoContent);
         }
         
         public ActionResult DelNote(int id)
         {
-            unitOfWork.Notations.Delete(id);
-            unitOfWork.Save();
-            return Redirect("/Account/Index/"+(int)Session["userId"]);
+            try
+            {
+                unitOfWork.Notations.Delete(id);
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return Redirect("/Account/Index");
         }
         
         // methods person info manage
         [HttpPost]
         public ActionResult DownloadFoto(HttpPostedFileBase uploadFile)
         {
-            int id = (int)Session["userId"];
             try
             {
                 if (ModelState.IsValid && uploadFile.ContentLength > 0)
                 {                     
-                    var alterPerson = unitOfWork.Persons.Get(id); 
+                    var alterPerson = unitOfWork.Persons.Get(Session["userId"].ToString()); 
                     MemoryStream target = new MemoryStream();
                     uploadFile.InputStream.CopyTo(target);
                     alterPerson.PasswordConfirm = alterPerson.password;
@@ -93,7 +102,7 @@ namespace PersonDictionary.Controllers
                     unitOfWork.Persons.Update(alterPerson);
                     unitOfWork.Save();
                 }
-                ViewData["message"] = "Upload successful";
+                
             }
             catch (DbEntityValidationException e)
             {
@@ -109,9 +118,9 @@ namespace PersonDictionary.Controllers
             }
             catch
             {
-                ViewData["message"] = "Upload failed";
+                
             }
-            return Redirect("/Account/Index/"+ id );
+            return Redirect("/Account/Index");
         }
     }
 }
