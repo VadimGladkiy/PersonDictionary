@@ -7,17 +7,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8" />
-    <title>Home page</title>
-    
+    <title>Home Page</title>
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/ScriptsMy/HomeScripts.js"></script>
     <link href="~/Styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/StylesDemo/Initial_styles.css" rel="stylesheet" />
-
-    <link href="~/StylesDemo/Initial_styles.css" rel="stylesheet" />
-    
+    <link href="~/StylesMy/BaseStyles.css" rel="stylesheet" />
+    <link href="~/StylesMy/HomeStyles.css" rel="stylesheet" />
     
 </head>
 <body>
@@ -29,20 +27,21 @@
                 </h4>
                 <strong>
                     Login or registrer
-                </strong>
+                </strong>                
+                <a href="/Account/Index">my account</a>
             </div>
             <div id="head_ico">
-                <img src="~/StylesDemoContent/dict_az.png" width="55" height="65"
+                <img src="~/PicturesContent/ico_app.png" width="55" height="65"
                       alt="ico">
-                <span>You are welcome!</span>
+                <p>You are welcome!</p>
             </div>
             <div>
-                Authorize status: @ViewBag.AuthorizeStatus <span>   |   </span>
-                Id_Trace: @ViewBag.Id_Trace
+                Authorize status: @ViewBag.AuthorizeStatus 
+                
             </div>
         </div>    
     </header>
-    <main id="Content">
+    <main id="Content AutoHeight">
         <div id="sign_up">
             <p> if you want to be a new user 
                 @Ajax.ActionLink(linkText: "to sign up",
@@ -51,7 +50,8 @@
                 {
                     UpdateTargetId = "logOrRegistPlace",
                     HttpMethod = "Get",
-                    InsertionMode = InsertionMode.Replace
+                    InsertionMode = InsertionMode.Replace,
+                    
                 },
                 routeValues: new { },
                 htmlAttributes: new { Id = "link_reg" })
@@ -65,21 +65,53 @@
                 {
                     UpdateTargetId = "logOrRegistPlace",
                     HttpMethod = "Get",
-                    InsertionMode = InsertionMode.Replace
+                    InsertionMode = InsertionMode.Replace,
+                    
                 },
                 routeValues: new { },
                 htmlAttributes: new { Id = "link_log" })
             </p>
             
         </div>
+        
         <div id="logOrRegistPlace">
-
         </div>
-        <br />
-        <div id="img_dict">
-            <img src="~/StylesDemoContent/dict_links.jpg" width="350" />
-            <br/>
-            <img src="~/StylesDemoContent/elect_links.jpg" width="350" />
+        
+        <div id="img_loop" class="container">
+            <div class="row col-md-12">
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/person01.png" alt="person" />
+                </div>
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/Arrow-toRight.png" alt="arrow to right" />
+                </div>
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/file04Blue.png" alt="notes" />
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/Arrow-toUp.png" alt="arrow to up" />
+                </div>
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/Arrow-toDown.png" alt="arrow to down" />
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/file05.png" alt="files" />
+                </div>
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/Arrow-toLeft.png" alt="arrow to left" />
+                </div>
+                <div class="col-md-4">
+                    <img src="~/PicturesContent/db3.png" alt="database" />
+                </div>
+            </div>
+            
         </div>
         
         <div id="promo">
@@ -118,35 +150,23 @@
             Here should be some general info about authors, dates, contacts.
         </i>
     </footer>
-    
 </body>
 </html>
-<script>
-    $(document).ready(function ()
-    {
-        var footer = $(
-            "<footer id='footer_init'><i>This is a footer of the page."+
-            "<br/>"+
-            "Here should be some general info about authors, dates, contacts." +
-            "</i></footer>"
-        );
-        function FooterMoves()
-        {
-            footer.insertAfter("main#Content");
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.CloseForm').bind('click', function () {
+            $('div#logOrRegistPlace').empty();
+        });
+        function setHeight() {
+            var H = $('.AutoHeight').css({
+                height: ($(window).height()) -
+                    ($('header').css('height')) -
+                    ($('footer').css('height')) + 'px'
+            });
         }
-        /*   
-        $("#link_reg,#link_log").on('click', function ()
-        {
-            $("#footer_init").detach();
-            FooterMoves();
-            $("#footer_init").css('position', 'relative');
-        });
-        $("#link_log").on('click', function () {
-            $("#footer_init").detach();
-            FooterMoves();
-            $("#footer_init").css('position', 'relative');
-        });
-        */
-        //FooterMoves();
-});
+        setHeight(); // устанавливаем высоту окна при первой загрузке страницы
+        $(window).resize(setHeight); // обновляем при изменении размеров окна
+
+    });
 </script>
+

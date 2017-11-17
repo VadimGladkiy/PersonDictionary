@@ -31,13 +31,18 @@ namespace PersonDictionary.Controllers
             var person = unitOfWork.Persons.Get(Session["userId"].ToString());
             if (person != null)
             {
-                person.Notes = unitOfWork.Notations.GetAll(Session["userId"].ToString()).ToList();
+                List<Note> items = unitOfWork.Notations
+                    .GetAll(Session["userId"].ToString()).ToList();
+
+                person.Notes = items.Skip((pageNumber-1)*pageSize)
+                    .Take(pageSize).ToList();
+
                 model.Person = person; 
                 model.PageInfo = new PageInfo
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    TotalItems = person.Notes.Count()
+                    TotalItems = items.Count()
                 };
                 return View(model);
             }

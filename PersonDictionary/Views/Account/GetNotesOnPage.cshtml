@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<PersonDictionary.Models.Note>
 @using PersonDictionary.Infrastructure
-<div>
-    <table class="container table">
+<div class="container container-fluid">
+    <table class="table table-hover">
         <thead>
-            <tr class="row">
-                <td class="col-md-5">message</td>
+            <tr class="row col-md-12 table-info">
+                <td class="col-md-8">message</td>
                 <td class="col-md-2">time</td>
                 <td class="col-md-2">delete it</td>
             </tr>
@@ -12,15 +12,13 @@
         <tbody>
             @foreach (var ptr in Model)
             {
-                <tr class="row">
-                    <td class="col-md-5">
+                <tr class="row col-md-12 table-success">
+                    <td class="col-md-8">
                         @ptr.message
                     </td>
-
                     <td class="col-md-2">
                         @ptr.time
                     </td>
-
                     <td class="col-md-2">
                         @Html.ActionLink("delete", "DelNote",
                     routeValues: new { id = ptr.id })
@@ -29,6 +27,5 @@
             }
         </tbody>
     </table>
-        
 </div>
 

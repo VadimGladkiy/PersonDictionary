@@ -1,0 +1,47 @@
+﻿body{
+
+}
+header{
+    height:100%; 
+    border-bottom:solid;
+    text-indent: 30px;
+    padding-top:13px;
+    padding-left:2em;
+    padding-right:2em;
+}
+
+header i{
+    
+}
+#log_out_block {
+    width: 30%;
+    float:right;
+    text-align:right;
+}
+#header_info {
+    width: 70%;
+    float:left;
+}
+#person_info{
+    width:30%;
+    float:right;
+    clear: both;
+    background-image:url(/PicturesContent/paper-sheet.png);
+    padding-left: 1.5em;
+    color:blue;
+    font-size: 20px;
+}
+#person_info h3{
+    text-align:center;
+    color:blue;
+}
+#Notes{
+    width:65%;
+    margin-left:5%;
+}
+#Notes h4{
+    text-align:center;
+}
+div#note_adding_block{
+    margin-left:2em;
+}

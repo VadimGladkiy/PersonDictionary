@@ -11,26 +11,31 @@
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <link href="~/Styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/StylesDemo/Index_styles.css" rel="stylesheet" />
+    <link href="~/StylesMy/BaseStyles.css" rel="stylesheet" />
+    <link href="~/StylesMy/IndexStyles.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <div id="header_info">
-        <i>
-            This is a personal page - a collection of web pages, 
-            with content that describes the sphere of interest of a person.
-        </i>
-        <i>
-            The user has the rights to log out, to view,            
-            to change any personal information.
-        </i>
-        </div>
-        <div id="log_out_block">
-            @Html.ActionLink(linkText: "LogOut",
+    <div class="container card-header">
+        <header class="row col-md-12">
+            <div id="header_info" class="col-md-8">
+                <i>
+                    This is a personal page - a collection of web pages,
+                    with content that describes the sphere of interest of a person.
+                </i>
+                <i>
+                    The user has the rights to log out, to view,
+                    to change any personal information.
+                </i>
+            </div>
+            <div id="log_out_block" class="col-md-4">
+                <a href="/Home/Initial">Return Home</a>
+                <span>  |   </span>
+                @Html.ActionLink(linkText: "LogOut",
          actionName: "LogOut", controllerName: "Home")
-            <img src="~/StylesDemoContent/exit_log.png" width="60" alt="Exit.png" />
-        </div>
-    </header>
+                <img src="~/PicturesContent/exit00.png" width="60" alt="Exit.png" />
+            </div>
+        </header>
+    </div>
     <div id="person_info">
         <br />
         <h3>person info</h3>
@@ -60,21 +65,15 @@
         <div>
             @using (Html.BeginForm("DownloadFoto", "Account", FormMethod.Post,
                 htmlAttributes:
-                new { enctype = "multipart/form-data" }
+                new { enctype = "multipart/form-data", @class="form-horizontal"}
                 ))
             {
                 @Html.AntiForgeryToken()
-                <fieldset>
-                    <legend>Upload a new photo</legend>
-
-                    <div class="editor-field">
-                        <input type="file" name="uploadFile" />
+                    <div class="form-group">
+                        <label for="btn_UploadPhoto" class="form-control-label">Upload a new photo</label>
+                        <input id="btn_UploadPhoto" type="file" name="uploadFile" value="Choose a photo" class="btn btn-primary"/>
+                        <input type="submit" value="Upload" class="btn btn-warning" />
                     </div>
-                    <div class="editor-field">
-                        <input type="submit" value="Upload" />
-                    </div>
-                </fieldset>
-                <br />
             }
         </div>
     </div>
@@ -87,16 +86,20 @@
             @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { pageNumber = x }))
         </div>
     </div>
-    <div>
+    <div id="note_adding_block">
         <br />
-        @using (Html.BeginForm("AddNote", "Account", FormMethod.Post))
+        @using (Html.BeginForm("AddNote", "Account", FormMethod.Post, new { @class="form-horizontal"}))
         {
-            
-            <textarea name="newNote" rows="8" cols="70"
-                maxlength="500" required>
-            </textarea>
-            <br />
-            <input type="submit" value="Create a new note" />
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="new_area">add a new note:</label>
+                <textarea id="new_area" name="newNote" rows="8" cols="70"
+                maxlength="500" required placeholder="Enter text">
+                </textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="note_send">to send:</label>
+                <input id="note_send" type="submit" value="Create a new note" class="btn btn-warning"/>
+            </div>
         }
         
     </div>

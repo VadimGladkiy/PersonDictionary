@@ -31,7 +31,9 @@ namespace PersonDictionary.SendingToEmail
             {
                 client.Send(message);
             }
+#pragma warning disable CS0168 // The variable 'ex' is declared but never used
             catch (Exception ex)
+#pragma warning restore CS0168 // The variable 'ex' is declared but never used
             {
                 return false;
                 // some handler also

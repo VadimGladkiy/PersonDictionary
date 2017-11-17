@@ -37,6 +37,9 @@ namespace PersonDictionary.Controllers
         }
         public ActionResult Initial()
         {
+            if (User.Identity.IsAuthenticated)
+                AuthorizeStatus = "You are authorized, go to your page";
+            else AuthorizeStatus = "You are not authorized";
             ViewBag.AuthorizeStatus = AuthorizeStatus;
             ViewBag.Id_Trace = Id_Trace;
             return View();
@@ -135,7 +138,8 @@ namespace PersonDictionary.Controllers
                         dbPersons.Persons.Add(model);
                         dbPersons.SaveChanges();
                         dbPersons.Dispose();
-                        AuthorizeStatus = "you was successfully registered ";
+                        AuthorizeStatus = @"you was successfully registered 
+                            / You should to log in";
                         return Redirect("/Home/Initial");
                     }
                     catch (DbEntityValidationException e)
@@ -150,7 +154,9 @@ namespace PersonDictionary.Controllers
                             }
                         }
                     }
+#pragma warning disable CS0168 // The variable 'exc' is declared but never used
                     catch (Exception exc)
+#pragma warning restore CS0168 // The variable 'exc' is declared but never used
                     {
                         AuthorizeStatus = "Some exception was arisen";
                     }

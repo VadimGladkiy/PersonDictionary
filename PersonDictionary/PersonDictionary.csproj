@@ -163,6 +163,21 @@
     <Content Include="Fonts\Ubuntu-MediumItalic.ttf" />
     <Content Include="Fonts\Ubuntu-Regular.ttf" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="PicturesContent\Arrow-toDown.png" />
+    <Content Include="PicturesContent\Arrow-toLeft.png" />
+    <Content Include="PicturesContent\Arrow-toRight.png" />
+    <Content Include="PicturesContent\Arrow-toUp.png" />
+    <Content Include="PicturesContent\Book01.jpg" />
+    <Content Include="PicturesContent\db3.png" />
+    <Content Include="PicturesContent\DB_Entity.png" />
+    <Content Include="PicturesContent\elect_links.png" />
+    <Content Include="PicturesContent\exit00.png" />
+    <Content Include="PicturesContent\file04Blue.png" />
+    <Content Include="PicturesContent\file05.png" />
+    <Content Include="PicturesContent\ico_app.png" />
+    <Content Include="PicturesContent\paper-sheet.png" />
+    <Content Include="PicturesContent\person01.png" />
+    <Content Include="ScriptsMy\HomeScripts.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -174,13 +189,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="StylesDemoContent\dict_az.png" />
-    <Content Include="StylesDemoContent\dict_links.jpg" />
-    <Content Include="StylesDemoContent\elect_links.jpg" />
-    <Content Include="StylesDemoContent\exit_log.png" />
-    <Content Include="StylesDemoContent\office_book_user.jpg" />
-    <Content Include="StylesDemo\Index_styles.css" />
-    <Content Include="StylesDemo\Initial_styles.css" />
+    <Content Include="StylesMy\BaseStyles.css" />
+    <Content Include="StylesMy\HomeStyles.css" />
+    <Content Include="StylesMy\IndexStyles.css" />
     <Content Include="Styles\bootstrap-grid.css" />
     <Content Include="Styles\bootstrap-grid.min.css" />
     <Content Include="Styles\bootstrap-reboot.css" />
@@ -205,6 +216,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Infrastructure\NotesViewModel.cs" />
     <Compile Include="Infrastructure\PageInfo.cs" />
     <Compile Include="Infrastructure\PagingHelpers.cs" />
