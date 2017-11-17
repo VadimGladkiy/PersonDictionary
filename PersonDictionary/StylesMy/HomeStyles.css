@@ -28,7 +28,8 @@ main{
     margin-bottom: 48px;
     background-image:url(/PicturesContent/Book01.jpg);
     background-size:cover;
-    height:100%;
+    max-width: 100%;
+    height:auto;
 }
 footer{
     position:fixed;
@@ -77,4 +78,7 @@ div#promo p{
 }
 #logOrRegistPlace{
     
+}
+.MyTextColor{
+    color:#f97c39;
 }

@@ -12,7 +12,7 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/ScriptsMy/HomeScripts.js"></script>
+   
     <link href="~/Styles/bootstrap.min.css" rel="stylesheet" />
     <link href="~/StylesMy/BaseStyles.css" rel="stylesheet" />
     <link href="~/StylesMy/HomeStyles.css" rel="stylesheet" />
@@ -41,7 +41,7 @@
             </div>
         </div>    
     </header>
-    <main id="Content AutoHeight">
+    <main id="Content" class="AutoHeight">
         <div id="sign_up">
             <p> if you want to be a new user 
                 @Ajax.ActionLink(linkText: "to sign up",
@@ -158,14 +158,19 @@
             $('div#logOrRegistPlace').empty();
         });
         function setHeight() {
-            var H = $('.AutoHeight').css({
-                height: ($(window).height()) -
-                    ($('header').css('height')) -
-                    ($('footer').css('height')) + 'px'
-            });
+             
+             var winHei = $(window).height();
+             var headHei = $('header').height();
+             var fooHei = $('footer').height();
+             var H = winHei - headHei - fooHei;
+             //alert("Windows: " + winHei + ',' + "header: " + headHei + ',' + "foo: " + fooHei);
+             //alert('until resize H: ' +H);
+             $('#Content').css('height', H);
+             var C = $('#Content').height();
+             //alert("C"+C);
         }
-        setHeight(); // устанавливаем высоту окна при первой загрузке страницы
-        $(window).resize(setHeight); // обновляем при изменении размеров окна
+        //setHeight(); // устанавливаем высоту окна при первой загрузке страницы
+        //$(window).resize(setHeight); // обновляем при изменении размеров окна
 
     });
 </script>
