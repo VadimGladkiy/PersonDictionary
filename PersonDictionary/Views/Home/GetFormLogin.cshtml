@@ -1,4 +1,11 @@
-﻿@model PersonDictionary.Models.Customer
+﻿<script src="@Url.Content("~/Scripts/jquery-1.6.1.min.js")"
+        type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js")"
+        type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"
+        type="text/javascript"></script>
+<link href="~/StylesMy/Validation.css" rel="stylesheet" />
+@model PersonDictionary.Models.Customer
 
 @using (Html.BeginForm("Login","Home")) 
 {

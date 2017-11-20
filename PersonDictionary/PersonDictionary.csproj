@@ -192,6 +192,7 @@
     <Content Include="StylesMy\BaseStyles.css" />
     <Content Include="StylesMy\HomeStyles.css" />
     <Content Include="StylesMy\IndexStyles.css" />
+    <Content Include="StylesMy\Validation.css" />
     <Content Include="Styles\bootstrap-grid.css" />
     <Content Include="Styles\bootstrap-grid.min.css" />
     <Content Include="Styles\bootstrap-reboot.css" />

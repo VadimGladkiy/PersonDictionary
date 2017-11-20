@@ -116,7 +116,8 @@ namespace PersonDictionary.Controllers
                 };
 
                 IdentityResult result = await UserManager
-                    .CreateAsync(new Customer {
+                    .CreateAsync(new Customer
+                    {
                         Email = model.eMail,
                         UserName = model.Name,
                         login = model.login,
@@ -170,6 +171,7 @@ namespace PersonDictionary.Controllers
                     AuthorizeStatus = "the model is wrong";
                 }
             }
+            else { AuthorizeStatus = "your fields of registration are wrong"; }
             return RedirectToAction("Initial");
         }
         public ActionResult RememberPassword()

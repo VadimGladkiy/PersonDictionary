@@ -1,17 +1,32 @@
-﻿@model PersonDictionary.Models.Person
-@using (Html.BeginForm("UserRegister","Home")) 
+﻿<script src="@Url.Content("~/Scripts/jquery-1.6.1.min.js")"
+        type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js")"
+        type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"
+        type="text/javascript"></script>
+<link href="~/StylesMy/Validation.css" rel="stylesheet" />
+@model PersonDictionary.Models.Person
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+@using (Ajax.BeginForm("UserRegister","Home", ajaxOptions: new AjaxOptions
 {
-    @Html.AntiForgeryToken()
-    
+    HttpMethod = "Post",
+}, 
+    htmlAttributes: new { @class = "form-horizontal", role = "form" }))
+    {
+    @Html.ValidationSummary(true)
+
     <div class="form-horizontal container MyTextColor">
         <h4>Person</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        @Html.ValidationSummary(true, "person did not pass a validation",
+           new { @class = "text-danger" })
         <div class="form-group row">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
       
@@ -58,6 +73,6 @@
 <script type="text/javascript">
     $('.CloseForm').bind('click', function () {
         $('div#logOrRegistPlace').empty();
-    });
+});
 </script>
 
