@@ -53,24 +53,31 @@ namespace PersonDictionary.Controllers
 
         [HttpPost]
         [ApiAuthentAttr]
-        public IHttpActionResult Post([FromBody]String newMessage)
+        [Route("api/Share/post/{newMessage}")]
+        public IHttpActionResult Post(string newMessage)
         {
             if ( newMessage == null)
             {
                 return BadRequest();
             }
-            String userId1 = Request.Properties["UserId"].ToString();
-            var temp = new Note
+            try
             {
-                message = newMessage,
-                time = DateTime.Now,
-                PersonId = userId1
-            };
-            unitOfWork.Notations.Create(temp);
+                String userId1 = Request.Properties["UserId"].ToString();
+                var temp = new Note
+                {
+                    message = newMessage,
+                    time = DateTime.Now,
+                    PersonId = userId1
+                };
+                unitOfWork.Notations.Create(temp);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
             return Ok();           
         }
 
-        
         [System.Web.Http.HttpDelete]
         [ApiAuthentAttr]
         [Route("api/Share/delete/{id}")]

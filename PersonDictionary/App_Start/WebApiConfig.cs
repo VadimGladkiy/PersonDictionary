@@ -15,7 +15,6 @@ namespace PersonDictionary
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             //config.Formatters.JsonFormatter.CreateDefaultSerializerSettings();
             
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -27,6 +26,25 @@ namespace PersonDictionary
                     controller = "Share",
                     action = "Delete",
                     id = RouteParameter.Optional
+                }
+            );
+            config.Routes.MapHttpRoute(
+                name: "",
+                routeTemplate: "api/Share",
+                defaults: new
+                {
+                    controller = "Share",
+                    action = "Post",
+                }
+            );
+            config.Routes.MapHttpRoute(
+                name: "",
+                routeTemplate: "api/Share/post/{newMessage}",
+                defaults: new
+                {
+                    controller = "Share",
+                    action = "Post",
+                    newMessage = RouteParameter.Optional
                 }
             );
             config.Routes.MapHttpRoute(
