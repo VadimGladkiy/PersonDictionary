@@ -11,9 +11,24 @@ namespace PersonDictionary
         {
             // Web API configuration and services
 
+            // отключаем возможность вывода данных в формате xml
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            //config.Formatters.JsonFormatter.CreateDefaultSerializerSettings();
+            
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            config.Routes.MapHttpRoute(
+                name: "",
+                routeTemplate: "api/Share/delete/{id}",
+                defaults: new
+                {
+                    controller = "Share",
+                    action = "Delete",
+                    id = RouteParameter.Optional
+                }
+            );
             config.Routes.MapHttpRoute(
                 name: "",
                 routeTemplate: "api/Share/GetNotes",

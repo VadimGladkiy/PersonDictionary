@@ -10,26 +10,23 @@ using PersonDictionary.ApiService;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
+using System.Text;
 
 namespace PersonDictionary.Controllers
 {
     
     public class ShareController : ApiController
     {
-        private UnitOfWork unitOfWork;
-        public ShareController()
+        private static UnitOfWork unitOfWork;
+        static ShareController()
         {
             unitOfWork = new UnitOfWork();
-
-            var user_id = RequestContext.Principal.Identity.GetUserId();
-
-            if (user_id == null)
-            {
-                // some handler
-            }
-            else
-            unitOfWork.currUserId = user_id;
         }
+        public ShareController()
+        {
+            
+        }
+        [HttpGet]
         [LogActionFilter]
         [ApiAuthentAttr]
         public IHttpActionResult GetNotes()
@@ -37,11 +34,12 @@ namespace PersonDictionary.Controllers
             IEnumerable<Note> items;
             String userName1 =  Thread.CurrentPrincipal.Identity.Name;
             String userId1  = Request.Properties["UserId"].ToString();
-            items = unitOfWork.Notations.GetAll(userId1)
-            .ToList().OrderBy(x => x.time);
+            items = unitOfWork.Notations.GetAll(userId1).ToList();
             return Ok(items);            
         }
+
         [HttpGet]
+        [ApiAuthentAttr]
         public IHttpActionResult GetTheOne(int id)
         {
             Note item;
@@ -52,45 +50,36 @@ namespace PersonDictionary.Controllers
             }
             return Ok(item);
         }
+
         [HttpPost]
-        public IHttpActionResult Post([FromBody]Note newInstance)
+        [ApiAuthentAttr]
+        public IHttpActionResult Post([FromBody]String newMessage)
         {
-            if (!ModelState.IsValid || newInstance == null)
+            if ( newMessage == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
+            String userId1 = Request.Properties["UserId"].ToString();
             var temp = new Note
             {
-                message = newInstance.message,
+                message = newMessage,
                 time = DateTime.Now,
-                PersonId = unitOfWork.currUserId
+                PersonId = userId1
             };
             unitOfWork.Notations.Create(temp);
-                    
-            String location = Request.RequestUri + "/" + newInstance.PersonId.ToString();
-            return Created(location, newInstance);           
+            return Ok();           
         }
-        [HttpDelete]
+
+        
+        [System.Web.Http.HttpDelete]
+        [ApiAuthentAttr]
+        [Route("api/Share/delete/{id}")]
         public IHttpActionResult Delete(int id)
         {
             bool result = 
             unitOfWork.Notations.Delete(id);
             if (result) return Ok();
             else return NotFound();
-        }
-        public IHttpActionResult Put(Note updated)
-        {
-            if (updated != null || !ModelState.IsValid)
-            {
-                var obj = new Note
-                {
-                    message = updated.message,
-                    time = DateTime.Now
-                };
-                unitOfWork.Notations.Update(updated);
-            return Ok();
-            }
-            else return NotFound();           
         }
     }
 }

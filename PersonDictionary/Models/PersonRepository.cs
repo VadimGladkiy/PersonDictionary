@@ -47,5 +47,13 @@ namespace PersonDictionary.Models
         {
             throw new NotImplementedException();
         }
+        public String GetUserName(String userId)
+        {
+            return db.Persons.Single(x => x.Id == userId).Name;
+        }
+        public String GetPassword(String userId)
+        {
+            return db.Persons.Single(x => x.Id == userId).password;
+        }
     }
 }

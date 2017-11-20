@@ -15,16 +15,17 @@ namespace PersonDictionary.Infrastructure
             StringBuilder result = new StringBuilder();
             for (int i = 1; i <= pageInfo.TotalPages; i++)
             {
-                TagBuilder tag = new TagBuilder("a");
-                tag.MergeAttribute("href", pageUrl(i));
-                tag.InnerHtml = i.ToString();
+                
+                TagBuilder tag_a = new TagBuilder("a");
+                tag_a.MergeAttribute("href", pageUrl(i));
+                tag_a.InnerHtml = i.ToString();
               
                 if (i == pageInfo.PageNumber)
                 {
-                    tag.AddCssClass("btn-info");                    
+                    tag_a.AddCssClass("btn-info");                    
                 }
-                tag.AddCssClass("btn btn-default");
-                result.Append(tag.ToString());
+                tag_a.AddCssClass("btn btn-default");
+                result.Append(tag_a.ToString());
             }
             return MvcHtmlString.Create(result.ToString());
         }

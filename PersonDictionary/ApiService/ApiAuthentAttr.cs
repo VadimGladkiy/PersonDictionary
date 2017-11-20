@@ -9,13 +9,22 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Net;
+using Microsoft.AspNet.Identity;
 
 namespace PersonDictionary.ApiService
 {
     public class ApiAuthentAttr : AuthorizationFilterAttribute 
     {
+        private String userId;
+
         public override void OnAuthorization(HttpActionContext actionContext)
         {
+            if (actionContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                userId = actionContext.RequestContext.Principal.Identity.GetUserId();
+                actionContext.Request.Properties.Add("UserId", userId);
+            }
+            else
             if (actionContext.Request.Headers.Authorization == null)
             {
                 actionContext.Response = actionContext.Request
