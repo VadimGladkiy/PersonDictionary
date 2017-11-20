@@ -30,15 +30,6 @@ namespace PersonDictionary
             );
             config.Routes.MapHttpRoute(
                 name: "",
-                routeTemplate: "api/Share",
-                defaults: new
-                {
-                    controller = "Share",
-                    action = "Post",
-                }
-            );
-            config.Routes.MapHttpRoute(
-                name: "",
                 routeTemplate: "api/Share/post/{newMessage}",
                 defaults: new
                 {
@@ -47,6 +38,7 @@ namespace PersonDictionary
                     newMessage = RouteParameter.Optional
                 }
             );
+            /*
             config.Routes.MapHttpRoute(
                 name: "",
                 routeTemplate: "api/Share/GetNotes",
@@ -56,6 +48,7 @@ namespace PersonDictionary
                     action = "GetNotes"
                 }
             );
+            */
             config.Routes.MapHttpRoute(
                 name: "LoginIn",
                 routeTemplate: "Home/Login/{model}/{returnUrl}",

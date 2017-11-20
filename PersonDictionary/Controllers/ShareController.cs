@@ -42,8 +42,9 @@ namespace PersonDictionary.Controllers
         [ApiAuthentAttr]
         public IHttpActionResult GetTheOne(int id)
         {
+            String userId1 = Request.Properties["UserId"].ToString();
             Note item;
-            item = unitOfWork.Notations.Get(id);
+            item = unitOfWork.Notations.Get(id, userId1);
             if (item == null)
             {
                 return NotFound();
@@ -53,10 +54,9 @@ namespace PersonDictionary.Controllers
 
         [HttpPost]
         [ApiAuthentAttr]
-        [Route("api/Share/post/{newMessage}")]
-        public IHttpActionResult Post(string newMessage)
+        public IHttpActionResult Post([FromBody] string msg)
         {
-            if ( newMessage == null)
+            if (msg == null)
             {
                 return BadRequest();
             }
@@ -65,17 +65,18 @@ namespace PersonDictionary.Controllers
                 String userId1 = Request.Properties["UserId"].ToString();
                 var temp = new Note
                 {
-                    message = newMessage,
+                    message = msg,
                     time = DateTime.Now,
                     PersonId = userId1
                 };
                 unitOfWork.Notations.Create(temp);
+                unitOfWork.Save();
             }
             catch (Exception)
             {
                 return InternalServerError();
             }
-            return Ok();           
+            return Ok();
         }
 
         [System.Web.Http.HttpDelete]
@@ -85,7 +86,11 @@ namespace PersonDictionary.Controllers
         {
             bool result = 
             unitOfWork.Notations.Delete(id);
-            if (result) return Ok();
+            if (result)
+            {
+                unitOfWork.Save();
+                return Ok();
+            }
             else return NotFound();
         }
     }

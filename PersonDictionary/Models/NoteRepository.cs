@@ -24,7 +24,10 @@ namespace PersonDictionary.Models
         {
             return db.Notations.Find(id);
         }
-
+        public Note Get(int id, String userId)
+        {
+            return db.Notations.FirstOrDefault(x => x.PersonId == userId && x.id == id);
+        }
         public void Create(Note note)
         {
             db.Notations.Add(note);
@@ -36,16 +39,24 @@ namespace PersonDictionary.Models
         }
 
         public bool Delete(Int32 id)
-        { 
-            Note itemToDel = db.Notations.First(x => x.id == id);
-            if (itemToDel.time.AddMinutes(1440) < DateTime.Now)
+        {
+            try
+            {
+                Note itemToDel = db.Notations.SingleOrDefault(x => x.id == id);
+                if (itemToDel == null) return false;
+                if (itemToDel.time.AddMinutes(1440) < DateTime.Now)
+                {
+                    return false;
+                }
+                else
+                {
+                    db.Notations.Remove(itemToDel);
+                    return true;
+                }
+            }
+            catch (Exception)
             {
                 return false;
-            }
-            else 
-            {
-                db.Notations.Remove(itemToDel);
-                return true;
             }
         }
         public IEnumerable<Note> GetAll()

@@ -10,12 +10,13 @@ namespace PersonDictionary.ApiService
     {
         public static String Login(string userName, string password)
         {
-            using (DataContext _DBEntities = new DataContext())
-            {
-                return  _DBEntities.Persons.Single(x => x.Name
-                .Equals(userName, StringComparison.OrdinalIgnoreCase)
-                && x.password == password).Id;
-            }
+                using (DataContext _DBEntities = new DataContext())
+                {
+                    return _DBEntities.Persons.SingleOrDefault(x => x.Name
+                   .Equals(userName, StringComparison.OrdinalIgnoreCase)
+                   && x.password == password).Id;
+                }
+     
         }
     }
 }
